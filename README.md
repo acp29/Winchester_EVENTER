@@ -2,7 +2,7 @@
 
 Data and code for:
 
-Winchester, G.†, Steele, O.G.†*, Liu, S.1, Chagas, A.M., Aziz, W., Penn, A.C.  (2024) Reproducible supervised learning-assisted classification of spontaneous synaptic waveforms with Eventer. *Front Neuroinform*. Submitted
+Winchester, G.†, Steele, O.G.†*, Liu, S., Chagas, A.M., Aziz, W., Penn, A.C.  (2024) Reproducible supervised learning-assisted classification of spontaneous synaptic waveforms with Eventer. *Front Neuroinform*. Submitted
 
 † These authors contributed equally to this work and share first authorship  
 \* Correspondence:  [Steele, Oliver G.](mailto:O.Steele@BSMS.ac.uk)   
