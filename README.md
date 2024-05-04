@@ -13,4 +13,4 @@ The following links display jupyter notebooks rendered in HTML:
 * [Figure 5 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/a2771b5170b057165bdc257c8a5a92b2bb6e91d9/output/fig5.html)
 * [Figure 7 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/ac730a626528072a95f03ee2858d01150e266e74/output/fig7.html)
 
-The Matlab code for simulating synaptic currents on real whole-cell recording noise is in the matlab/fig5 folder.
+The Matlab code for simulating synaptic currents on real whole-cell recording noise is in the `matlab/fig5` folder.
