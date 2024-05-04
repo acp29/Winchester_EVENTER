@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Fig7</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>fig7</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7623,11 +7623,26 @@ Parameter functions
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-octave"><pre><span></span><span class="nb">load</span> <span class="p">(</span><span class="s">'../data/data.mat'</span><span class="p">,</span> <span class="s">'-v7'</span><span class="p">)</span>
+<div class="highlight hl-octave"><pre><span></span><span class="nb">load</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig7.mat'</span><span class="p">,</span> <span class="s">'-v7'</span><span class="p">)</span>
 <span class="n">format</span> <span class="n">short</span> <span class="n">g</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-octave"><pre><span></span><span class="c">% Add the provided ismembertol function from Octave 9 to the path</span>
+<span class="nb">addpath</span> <span class="p">(</span><span class="nb">fullfile</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER'</span><span class="p">,</span> <span class="s">'octave'</span><span class="p">),</span> <span class="s">'-end'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7649,7 +7664,7 @@ Parameter functions
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Define bespoke function to compute MCC scores between event times in cells with indices a and b in data.fig7.EventTimes</span>
@@ -7720,7 +7735,7 @@ Parameter functions
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Compute pairwise MCC scores between users using either manual (MAN) or machine learning model classification (MLM)</span>
