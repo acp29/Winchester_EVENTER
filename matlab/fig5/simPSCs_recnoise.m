@@ -1,4 +1,4 @@
-filename = 'Sim6';
+filename = 'Sim1';
 noise_wave = 1;
 
 %  Script to simulate mEPSCs with amplitude and kinetics 
@@ -14,12 +14,15 @@ noise_wave = 1;
 
   % Generating the timings and amplitudes of events
   for i=1:n
+    
+    % Generate the event times
     Event=zeros(N,1);
     W=1e-12*exp(random('norm',2.46,0.35));	% Log-normal distributed random values with std = cv
     j=randi(N);
     Event(j)=1;
     EventMarkers=EventMarkers+Event;
-  % Generating the template event
+
+    % Generating the template event
     tau_r=1e-3*exp(random('norm',-0.31,0.60));
     tau_d=0;
     while tau_d <= tau_r
@@ -33,17 +36,18 @@ noise_wave = 1;
     TemplatePeak = max(Template);
     Template = Template/TemplatePeak;
     Template = Template*-1;
+
+    % Convolve the event marker with the template
     Template_FFT = fft(Template);
     Event_FFT = fft(Event);
     temp = real(ifft(Event_FFT.*Template_FFT));
     temp = temp*W;
     Trace=Trace+temp;
 
-
   end
   n = numel(find(EventMarkers~=0));
 
-  S=ephysIO('./noiseDB.phy');
+  S=ephysIO('./noiseDB.abf');
   Noisy = Trace+S.array(:,noise_wave+1);
 
   h1= figure(1);
@@ -51,6 +55,7 @@ noise_wave = 1;
   title('Simulated Trace');
   xlabel('Time (s)');
   ylabel('Current(A)');
+
   %Creating the folder to save stuff
   if exist(filename)==7
    rmdir(filename, 's')
@@ -58,13 +63,11 @@ noise_wave = 1;
   mkdir(filename);
   cd (filename);
 
-
-
   %Save simulation
-  ephysIO ('Simulation.phy',[T,Noisy],'s','A',{},{},'int32');
+  ephysIO ('Simulation.abf',[T,Noisy],'s','A',{},{});
   saveas(h1,'Simulation.fig','fig');
   %Save EventMarkers(event times with amplitude)
-  ephysIO ('EventMarkers.phy',[T,EventMarkers],'s','A',{},{},'int32');
+  ephysIO ('EventMarkers.abf',[T,EventMarkers],'s','A',{},{});
 
   %Save Event Times
   EventTimes=find(EventMarkers~=0)/sample_rate;
