@@ -8,3 +8,7 @@ Winchester, G.†, Steele, O.G.†*, Liu, S., Chagas, A.M., Aziz, W., Penn, A.C.
 \* Correspondence:  [Steele, Oliver G.](mailto:O.Steele@BSMS.ac.uk)   
   
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/acpennlab/statistics-resampling-online/jammy-docker?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252Facp29%252FWinchester_EVENTER%26urlpath%3Dlab%252Ftree%252FWinchester_EVENTER%252Findex.ipynb%26branch%3Dmaster)
+
+The following links display jupyter notebooks rendered in HTML:
+* [Figure 5 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/a2771b5170b057165bdc257c8a5a92b2bb6e91d9/output/fig5.html)
+* [Figure 7 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/a2771b5170b057165bdc257c8a5a92b2bb6e91d9/output/fig5.html)
