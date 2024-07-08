@@ -71,7 +71,7 @@ noise_wave = 1;
 
   %Save Event Times
   EventTimes=find(EventMarkers~=0)/sample_rate;
-  fid=(fopen('Event Times.txt','wt'));
+  fid=(fopen('EventTimes.txt','wt'));
   fprintf(fid, '%.9e\n', EventTimes);
   fclose(fid);
 
