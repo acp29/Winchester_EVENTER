@@ -11,6 +11,6 @@ Winchester, G.†, Steele, O.G.†*, Liu, S., Chagas, A.M., Aziz, W., Penn, A.C.
 
 The following links display jupyter notebooks rendered in HTML:
 * [Figure 5 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/ae0617064b00ba88d1765ffa50f5760d7f46c6d4/output/fig5.html)
-* [Figure 7 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/ac730a626528072a95f03ee2858d01150e266e74/output/fig7.html)
+* [Figure 7 analysis](https://htmlpreview.github.io/?https://github.com/acp29/Winchester_EVENTER/blob/6853a04ad9859d0800c5328abd50af6af23046a3/output/fig7.html)
 
 The Matlab script for simulating synaptic currents on real whole-cell recording noise is in the `matlab/fig5` folder. For evaluating the receiver operating characteristic (ROC) features and for simulating synaptic currents with white noise, see the Matlab functions `invcompE` and `simPSCs` respectively, which are both available in the `base` folder of the [eventer](https://github.com/acp29/eventer) GitHub repository.
