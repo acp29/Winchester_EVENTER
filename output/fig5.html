@@ -8195,7 +8195,7 @@ mailing list.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
@@ -8348,7 +8348,7 @@ MAN                                    +0.8763     +0.8229     +0.9343         4
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
@@ -8494,7 +8494,7 @@ MLM                                    +0.8914     +0.8307     +0.9525         4
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
@@ -8503,7 +8503,7 @@ MLM                                    +0.8914     +0.8307     +0.9525         4
 <span class="p">[</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">,</span> <span class="n">fdr</span><span class="p">]</span> <span class="p">=</span> <span class="nb">textread</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig5g.csv'</span><span class="p">,</span> <span class="s">'%d %s %f'</span><span class="p">,</span> <span class="s">'Delimiter'</span><span class="p">,</span> <span class="s">','</span><span class="p">,</span> <span class="s">'HeaderLines'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 
 <span class="c">% Calculate descriptive statistics</span>
-<span class="n">data_wide</span> <span class="p">=</span> <span class="n">cell2mat</span> <span class="p">(</span><span class="nb">cellfun</span> <span class="p">(@(</span><span class="n">name</span><span class="p">)</span> <span class="n">acc</span> <span class="p">(</span><span class="nb">ismember</span> <span class="p">(</span><span class="nb">class</span><span class="p">,</span> <span class="n">name</span><span class="p">)),</span> <span class="p">...</span>
+<span class="n">data_wide</span> <span class="p">=</span> <span class="n">cell2mat</span> <span class="p">(</span><span class="nb">cellfun</span> <span class="p">(@(</span><span class="n">name</span><span class="p">)</span> <span class="n">fdr</span> <span class="p">(</span><span class="nb">ismember</span> <span class="p">(</span><span class="nb">class</span><span class="p">,</span> <span class="n">name</span><span class="p">)),</span> <span class="p">...</span>
                                <span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="s">'UniformOutput'</span><span class="p">,</span> <span class="nb">false</span><span class="p">));</span>
 <span class="n">tbl</span> <span class="p">=</span> <span class="nb">table</span> <span class="p">(</span><span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">),</span> <span class="nb">mean</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">std</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)))</span><span class="o">'</span><span class="p">);</span>
 <span class="n">tbl</span> <span class="p">=</span> <span class="n">setVariableNames</span> <span class="p">(</span><span class="n">tbl</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span> <span class="p">{</span><span class="s">'class'</span><span class="p">,</span><span class="s">'mean'</span><span class="p">,</span><span class="s">'std'</span><span class="p">,</span><span class="s">'n'</span><span class="p">});</span>
@@ -8561,13 +8561,13 @@ MLM                                    +0.8914     +0.8307     +0.9525         4
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>----------------------------------
-| class | mean    | std      | n |
-----------------------------------
-| NEG   | 0.45472 | 0.084118 | 4 |
-| COR   | 0.85383 | 0.036749 | 4 |
-| MLM   | 0.89144 | 0.049421 | 4 |
-----------------------------------
+<pre>-----------------------------------
+| class | mean     | std      | n |
+-----------------------------------
+| NEG   | 0.54528  | 0.084118 | 4 |
+| COR   | 0.19098  | 0.109    | 4 |
+| MLM   | 0.032006 | 0.045623 | 4 |
+-----------------------------------
 
 MODEL FORMULA (based on Wilkinson's notation):
 
