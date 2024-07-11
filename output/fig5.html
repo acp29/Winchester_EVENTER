@@ -8195,13 +8195,20 @@ mailing list.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
 <span class="c">% Formatting: each %d, %s and %f corresponds to an integer, a string and a</span>
 <span class="c">% number (double precision) respectively</span>
 <span class="p">[</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">,</span> <span class="n">acc</span><span class="p">]</span> <span class="p">=</span> <span class="nb">textread</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig5e.csv'</span><span class="p">,</span> <span class="s">'%d %s %f'</span><span class="p">,</span> <span class="s">'Delimiter'</span><span class="p">,</span> <span class="s">','</span><span class="p">,</span> <span class="s">'HeaderLines'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c">% Calculate descriptive statistics</span>
+<span class="n">data_wide</span> <span class="p">=</span> <span class="n">cell2mat</span> <span class="p">(</span><span class="nb">cellfun</span> <span class="p">(@(</span><span class="n">name</span><span class="p">)</span> <span class="n">acc</span> <span class="p">(</span><span class="nb">ismember</span> <span class="p">(</span><span class="nb">class</span><span class="p">,</span> <span class="n">name</span><span class="p">)),</span> <span class="p">...</span>
+                               <span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="s">'UniformOutput'</span><span class="p">,</span> <span class="nb">false</span><span class="p">));</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="nb">table</span> <span class="p">(</span><span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span> <span class="nb">mean</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">std</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)))</span><span class="o">'</span><span class="p">);</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="n">setVariableNames</span> <span class="p">(</span><span class="n">tbl</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span> <span class="p">{</span><span class="s">'class'</span><span class="p">,</span><span class="s">'mean'</span><span class="p">,</span><span class="s">'std'</span><span class="p">,</span><span class="s">'n'</span><span class="p">});</span>
+<span class="n">prettyprint</span><span class="p">(</span><span class="n">tbl</span><span class="p">(:,:))</span> 
 
 <span class="c">% Setup orthoganol linear contrasts</span>
 <span class="c">% First column : Comparison of no screening (NEG) with the average accuracy of all screening methods (COR, MAN, MLM)</span>
@@ -8235,11 +8242,12 @@ mailing list.
                                        <span class="s">'contrasts'</span><span class="p">,</span> <span class="n">CONTRASTS</span><span class="p">,</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
                                        <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'posthoc'</span><span class="p">,</span> <span class="s">'pairwise'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
 
-<span class="c"># Calculate estimated marginal means for accuracy of each of the classification methods and their 95% (asymmetric) bootstrap-t confidence intervals </span>
+<span class="c"># Calculate estimated marginal means for accuracy of each of the classification methods and their 95% credible intervals</span>
+<span class="c"># by Bayesian bootstrap</span>
 <span class="n">EMM</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="p">...</span>
                                  <span class="s">'varnames'</span><span class="p">,</span> <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="p">...</span>
                                  <span class="s">'contrasts'</span><span class="p">,</span> <span class="n">CONTRASTS</span><span class="p">,</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
-                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
+                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'bayes'</span><span class="p">,</span> <span class="s">'prior'</span><span class="p">,</span> <span class="s">'auto'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
 
 <span class="c">% Save the figure of the diagnostic plots</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s">'../output/fig5e_diagnostic_plots.png'</span><span class="p">,</span><span class="s">'-dpng'</span><span class="p">,</span><span class="s">'-S960,720'</span><span class="p">)</span>
@@ -8255,13 +8263,15 @@ mailing list.
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre></pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
+<pre>----------------------------------
+| class | mean    | std      | n |
+----------------------------------
+| NEG   | 0.42557 | 0.070387 | 4 |
+| COR   | 0.88217 | 0.062107 | 4 |
+| MLM   | 0.92383 | 0.029409 | 4 |
+| MAN   | 0.87629 | 0.039153 | 4 |
+----------------------------------
+
 MODEL FORMULA (based on Wilkinson's notation):
 
 acc ~ 1 + simulation + classification
@@ -8306,10 +8316,10 @@ MODEL ESTIMATED MARGINAL MEANS
 
 name                                   mean        CI_lower    CI_upper        N
 --------------------------------------------------------------------------------
-NEG                                    +0.4256     +0.3507     +0.4976         4
-COR                                    +0.8822     +0.8361     +0.9303         4
-MLM                                    +0.9238     +0.8934     +0.9555         4
-MAN                                    +0.8763     +0.7854     +0.9643         4
+NEG                                    +0.4256     +0.3798     +0.4770         4
+COR                                    +0.8822     +0.8468     +0.9186         4
+MLM                                    +0.9238     +0.8937     +0.9541         4
+MAN                                    +0.8763     +0.8229     +0.9343         4
 
 </pre>
 </div>
@@ -8338,13 +8348,20 @@ MAN                                    +0.8763     +0.7854     +0.9643         4
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
 <span class="c">% Formatting: each %d, %s and %f corresponds to an integer, a string and a</span>
 <span class="c">% number (double precision) respectively</span>
 <span class="p">[</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">,</span> <span class="n">acc</span><span class="p">]</span> <span class="p">=</span> <span class="nb">textread</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig5f.csv'</span><span class="p">,</span> <span class="s">'%d %s %f'</span><span class="p">,</span> <span class="s">'Delimiter'</span><span class="p">,</span> <span class="s">','</span><span class="p">,</span> <span class="s">'HeaderLines'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c">% Calculate descriptive statistics</span>
+<span class="n">data_wide</span> <span class="p">=</span> <span class="n">cell2mat</span> <span class="p">(</span><span class="nb">cellfun</span> <span class="p">(@(</span><span class="n">name</span><span class="p">)</span> <span class="n">acc</span> <span class="p">(</span><span class="nb">ismember</span> <span class="p">(</span><span class="nb">class</span><span class="p">,</span> <span class="n">name</span><span class="p">)),</span> <span class="p">...</span>
+                               <span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="s">'UniformOutput'</span><span class="p">,</span> <span class="nb">false</span><span class="p">));</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="nb">table</span> <span class="p">(</span><span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">),</span> <span class="nb">mean</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">std</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)))</span><span class="o">'</span><span class="p">);</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="n">setVariableNames</span> <span class="p">(</span><span class="n">tbl</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span> <span class="p">{</span><span class="s">'class'</span><span class="p">,</span><span class="s">'mean'</span><span class="p">,</span><span class="s">'std'</span><span class="p">,</span><span class="s">'n'</span><span class="p">});</span>
+<span class="n">prettyprint</span><span class="p">(</span><span class="n">tbl</span><span class="p">(:,:))</span> 
 
 <span class="c">% Setup orthoganol linear contrasts</span>
 <span class="c">% First column : Comparison of no screening (NEG) with the average accuracy of both other methods (COR, MLM)</span>
@@ -8358,7 +8375,8 @@ MAN                                    +0.8763     +0.7854     +0.9643         4
 <span class="c">% https://gnu-octave.github.io/statistics-resampling/function/bootlm.html#7</span>
 <span class="p">[</span><span class="n">STATS</span><span class="p">,</span> <span class="n">BOOTSTAT</span><span class="p">,</span> <span class="n">AOVSTAT</span><span class="p">]</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
                              <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="s">'varnames'</span><span class="p">,</span> <span class="p">...</span>
-                             <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'seed'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+                             <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="p">...</span>
+                             <span class="s">'contrasts'</span><span class="p">,</span> <span class="n">CONTRASTS</span><span class="p">,</span> <span class="s">'seed'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'seed'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 
 <span class="c">% Report ANOVA results</span>
 <span class="nb">fprintf</span> <span class="p">(</span><span class="s">'ANOVA SUMMARY with effect of classification averaged over levels of simulation\n'</span><span class="p">)</span>
@@ -8376,11 +8394,12 @@ MAN                                    +0.8763     +0.7854     +0.9643         4
                           <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
                           <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'posthoc'</span><span class="p">,</span> <span class="s">'pairwise'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
 
-<span class="c"># Calculate estimated marginal means for accuracy of each of the classification methods and their 95% (asymmetric) bootstrap-t confidence intervals </span>
+<span class="c"># Calculate estimated marginal means for accuracy of each of the classification methods and their 95% credible intervals</span>
+<span class="c"># by Bayesian bootstrap</span>
 <span class="n">EMM</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
                                  <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="s">'varnames'</span><span class="p">,</span> <span class="p">...</span>
                                  <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
-                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
+                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'bayes'</span><span class="p">,</span> <span class="s">'prior'</span><span class="p">,</span> <span class="s">'auto'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
 
 <span class="c">% Save the figure of the diagnostic plots</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s">'../output/fig5f_diagnostic_plots.png'</span><span class="p">,</span><span class="s">'-dpng'</span><span class="p">,</span><span class="s">'-S960,720'</span><span class="p">)</span>
@@ -8396,13 +8415,14 @@ MAN                                    +0.8763     +0.7854     +0.9643         4
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre></pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
+<pre>----------------------------------
+| class | mean    | std      | n |
+----------------------------------
+| NEG   | 0.45472 | 0.084118 | 4 |
+| COR   | 0.85383 | 0.036749 | 4 |
+| MLM   | 0.89144 | 0.049421 | 4 |
+----------------------------------
+
 MODEL FORMULA (based on Wilkinson's notation):
 
 acc ~ 1 + simulation + classification
@@ -8411,12 +8431,12 @@ MODEL COEFFICIENTS
 
 name                                   coeff       CI_lower    CI_upper    p-val
 --------------------------------------------------------------------------------
-(Intercept)                            +0.4575     +0.4289     +0.4861     &lt;.001
-simulation_1                           +0.04301    +0.02837    +0.05764     .001
-simulation_2                           +0.002845   -0.1101     +0.1158      .889
-simulation_3                           -0.05698    -0.1604     +0.04641     .435
-classification_1                       +0.3991     +0.3321     +0.4661     &lt;.001
-classification_2                       +0.4367     +0.3433     +0.5301     &lt;.001
+(Intercept)                            +0.7333     +0.6828     +0.7839     &lt;.001
+simulation_1                           +0.04579    +0.01212    +0.07945     .004
+simulation_2                           +0.005628   -0.07639    +0.08765     .831
+simulation_3                           -0.05420    -0.1293     +0.02093     .324
+classification_1                       +0.4179     +0.3428     +0.4930     &lt;.001
+classification_2                       +0.03761    -0.02969    +0.1049      .360
 
 ANOVA SUMMARY with effect of classification averaged over levels of simulation
 F(3,6) = 1.75, p = 0.284 for the model: acc ~ 1 + simulation
@@ -8443,9 +8463,9 @@ MODEL ESTIMATED MARGINAL MEANS
 
 name                                   mean        CI_lower    CI_upper        N
 --------------------------------------------------------------------------------
-NEG                                    +0.4547     +0.3304     +0.5829         4
-COR                                    +0.8538     +0.8482     +0.8600         4
-MLM                                    +0.8914     +0.7620     +1.023          4
+NEG                                    +0.4547     +0.3914     +0.5163         4
+COR                                    +0.8538     +0.8231     +0.8854         4
+MLM                                    +0.8914     +0.8307     +0.9525         4
 
 </pre>
 </div>
@@ -8474,13 +8494,20 @@ MLM                                    +0.8914     +0.7620     +1.023          4
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-octave"><pre><span></span><span class="c">% Load data from comma-separated-value (CSV) file with header</span>
 <span class="c">% Formatting: each %d, %s and %f corresponds to an integer, a string and a</span>
 <span class="c">% number (double precision) respectively</span>
-<span class="p">[</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">,</span> <span class="n">acc</span><span class="p">]</span> <span class="p">=</span> <span class="nb">textread</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig5g.csv'</span><span class="p">,</span> <span class="s">'%d %s %f'</span><span class="p">,</span> <span class="s">'Delimiter'</span><span class="p">,</span> <span class="s">','</span><span class="p">,</span> <span class="s">'HeaderLines'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">[</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">,</span> <span class="n">fdr</span><span class="p">]</span> <span class="p">=</span> <span class="nb">textread</span> <span class="p">(</span><span class="s">'~/Winchester_EVENTER/data/fig5g.csv'</span><span class="p">,</span> <span class="s">'%d %s %f'</span><span class="p">,</span> <span class="s">'Delimiter'</span><span class="p">,</span> <span class="s">','</span><span class="p">,</span> <span class="s">'HeaderLines'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c">% Calculate descriptive statistics</span>
+<span class="n">data_wide</span> <span class="p">=</span> <span class="n">cell2mat</span> <span class="p">(</span><span class="nb">cellfun</span> <span class="p">(@(</span><span class="n">name</span><span class="p">)</span> <span class="n">acc</span> <span class="p">(</span><span class="nb">ismember</span> <span class="p">(</span><span class="nb">class</span><span class="p">,</span> <span class="n">name</span><span class="p">)),</span> <span class="p">...</span>
+                               <span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="s">'UniformOutput'</span><span class="p">,</span> <span class="nb">false</span><span class="p">));</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="nb">table</span> <span class="p">(</span><span class="nb">class</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">),</span> <span class="nb">mean</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">std</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)</span><span class="o">'</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">data_wide</span><span class="p">)))</span><span class="o">'</span><span class="p">);</span>
+<span class="n">tbl</span> <span class="p">=</span> <span class="n">setVariableNames</span> <span class="p">(</span><span class="n">tbl</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">),</span> <span class="p">{</span><span class="s">'class'</span><span class="p">,</span><span class="s">'mean'</span><span class="p">,</span><span class="s">'std'</span><span class="p">,</span><span class="s">'n'</span><span class="p">});</span>
+<span class="n">prettyprint</span><span class="p">(</span><span class="n">tbl</span><span class="p">(:,:))</span> 
 
 <span class="c">% Setup orthoganol linear contrasts</span>
 <span class="c">% First column : Comparison of no screening (NEG) with the average FDR of both other methods (COR, MLM)</span>
@@ -8492,9 +8519,10 @@ MLM                                    +0.8914     +0.7620     +1.023          4
 
 <span class="c">% ANOVA using wild bootstrap</span>
 <span class="c">% https://gnu-octave.github.io/statistics-resampling/function/bootlm.html#7</span>
-<span class="p">[</span><span class="n">STATS</span><span class="p">,</span> <span class="n">BOOTSTAT</span><span class="p">,</span> <span class="n">AOVSTAT</span><span class="p">]</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
+<span class="p">[</span><span class="n">STATS</span><span class="p">,</span> <span class="n">BOOTSTAT</span><span class="p">,</span> <span class="n">AOVSTAT</span><span class="p">]</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">fdr</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
                              <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="s">'varnames'</span><span class="p">,</span> <span class="p">...</span>
-                             <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'seed'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+                             <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="p">...</span>
+                             <span class="s">'contrasts'</span><span class="p">,</span> <span class="n">CONTRASTS</span><span class="p">,</span> <span class="s">'seed'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 
 <span class="c">% Report ANOVA results</span>
 <span class="nb">fprintf</span> <span class="p">(</span><span class="s">'ANOVA SUMMARY with effect of classification averaged over levels of simulation\n'</span><span class="p">)</span>
@@ -8507,16 +8535,17 @@ MLM                                    +0.8914     +0.7620     +1.023          4
 <span class="c">% Test whether FDR averaged over levels of simulation differ between the classification methods (using wild bootstrap)</span>
 <span class="c">% Confidence intervals are 95% (asymmetric) bootstrap-t intervals</span>
 <span class="c">% Type 1 error rate is controlled by Holm-Bonferroni step-wise adjustment</span>
-<span class="n">POSTTESTS</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
+<span class="n">POSTTESTS</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">fdr</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
                           <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="s">'varnames'</span><span class="p">,</span> <span class="p">...</span>
                           <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
                           <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'posthoc'</span><span class="p">,</span> <span class="s">'pairwise'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
 
-<span class="c"># Calculate estimated marginal means for FDR of each of the classification methods and their 95% (asymmetric) bootstrap-t confidence intervals </span>
-<span class="n">EMM</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
+<span class="c"># Calculate estimated marginal means for FDR of each of the classification methods and their 95% credible intervals</span>
+<span class="c"># by Bayesian bootstrap</span>
+<span class="n">EMM</span> <span class="p">=</span> <span class="n">bootlm</span> <span class="p">(</span><span class="n">fdr</span><span class="p">,</span> <span class="p">{</span><span class="n">sim</span><span class="p">,</span> <span class="nb">class</span><span class="p">},</span> <span class="s">'model'</span><span class="p">,</span> <span class="p">...</span>
                                  <span class="s">'linear'</span><span class="p">,</span> <span class="s">'display'</span><span class="p">,</span> <span class="s">'on'</span><span class="p">,</span> <span class="s">'varnames'</span><span class="p">,</span> <span class="p">...</span>
                                  <span class="p">{</span><span class="s">'simulation'</span><span class="p">,</span> <span class="s">'classification'</span><span class="p">},</span> <span class="s">'dim'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span>
-                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'wild'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]);</span>
+                                 <span class="s">'method'</span><span class="p">,</span> <span class="s">'bayes'</span><span class="p">,</span> <span class="s">'prior'</span><span class="p">,</span> <span class="s">'auto'</span><span class="p">,</span> <span class="s">'alpha'</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
 
 <span class="c">% Save the figure of the diagnostic plots</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s">'../output/fig5g_diagnostic_plots.png'</span><span class="p">,</span><span class="s">'-dpng'</span><span class="p">,</span><span class="s">'-S960,720'</span><span class="p">)</span>
@@ -8532,35 +8561,36 @@ MLM                                    +0.8914     +0.7620     +1.023          4
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre></pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
+<pre>----------------------------------
+| class | mean    | std      | n |
+----------------------------------
+| NEG   | 0.45472 | 0.084118 | 4 |
+| COR   | 0.85383 | 0.036749 | 4 |
+| MLM   | 0.89144 | 0.049421 | 4 |
+----------------------------------
+
 MODEL FORMULA (based on Wilkinson's notation):
 
-acc ~ 1 + simulation + classification
+fdr ~ 1 + simulation + classification
 
 MODEL COEFFICIENTS
 
 name                                   coeff       CI_lower    CI_upper    p-val
 --------------------------------------------------------------------------------
-(Intercept)                            +0.5216     +0.4706     +0.5726     &lt;.001
-simulation_1                           -0.02405    -0.06634    +0.01824     .169
-simulation_2                           -0.01991    -0.09729    +0.05747     .527
-simulation_3                           +0.1387     +0.02497    +0.2524      .020
-classification_1                       -0.3543     -0.4159     -0.2927     &lt;.001
-classification_2                       -0.5133     -0.5810     -0.4455     &lt;.001
+(Intercept)                            +0.2561     +0.2280     +0.2842     &lt;.001
+simulation_1                           -0.04773    -0.08151    -0.01395     .011
+simulation_2                           -0.04359    -0.1116     +0.02446     .174
+simulation_3                           +0.1150     +0.03575    +0.1942      .002
+classification_1                       -0.4338     -0.4811     -0.3865     &lt;.001
+classification_2                       -0.1590     -0.2323     -0.08563    &lt;.001
 
 ANOVA SUMMARY with effect of classification averaged over levels of simulation
-F(3,6) = 11.69, p = 0.00291 for the model: acc ~ 1 + simulation
-F(2,6) = 179.68, p = 0.0001 for the model: acc ~ 1 + simulation + classification
+F(3,6) = 11.69, p = 0.00291 for the model: fdr ~ 1 + simulation
+F(2,6) = 179.68, p = 0.0001 for the model: fdr ~ 1 + simulation + classification
 
 MODEL FORMULA (based on Wilkinson's notation):
 
-acc ~ 1 + simulation + classification
+fdr ~ 1 + simulation + classification
 
 MODEL POSTHOC COMPARISONS
 
@@ -8573,15 +8603,15 @@ COR - MLM                              +0.1590     +0.08489    +0.2332     &lt;.
 
 MODEL FORMULA (based on Wilkinson's notation):
 
-acc ~ 1 + simulation + classification
+fdr ~ 1 + simulation + classification
 
 MODEL ESTIMATED MARGINAL MEANS
 
 name                                   mean        CI_lower    CI_upper        N
 --------------------------------------------------------------------------------
-NEG                                    +0.5453     +0.5053     +0.5815         4
-COR                                    +0.1910     +0.1225     +0.2615         4
-MLM                                    +0.03201    -0.05582    +0.1212         4
+NEG                                    +0.5453     +0.5141     +0.5761         4
+COR                                    +0.1910     +0.1546     +0.2290         4
+MLM                                    +0.03201    -0.01232    +0.07711        4
 
 </pre>
 </div>
@@ -8590,6 +8620,20 @@ MLM                                    +0.03201    -0.05582    +0.1212         4
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
 <img alt="No description has been provided for this image" class="" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-octave"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </div>
